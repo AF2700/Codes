@@ -1,0 +1,50 @@
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract Bank {
+    uint public balance;
+
+    function deposit() public payable {
+        require(msg.value > 0, "Enter amount greater than 0");
+        balance += msg.value;
+    }
+
+    function withdraw(uint amount) public {
+        require(balance > 0, "Balance must be greater than 0");
+        require(amount > 0 && amount <= balance, "Invalid amount");
+        balance -= amount;
+        payable(msg.sender).transfer(amount);
+    }
+
+    function showBalance() public view returns(uint) {
+        return balance;
+    }
+}
+
+
+
+2
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract StudentData {
+
+    struct Student {
+        uint rollNo;
+        string name;
+        uint marks;
+    }
+
+    Student[] public students;
+
+    function addStudent(uint r, string memory n, uint m) public {
+        students.push(Student(r, n, m));
+    }
+
+    function getStudent(uint index) public view returns(uint, string memory, uint) {
+        Student memory s = students[index];
+        return (s.rollNo, s.name, s.marks);
+    }
+}
